@@ -2,6 +2,7 @@ package main
 import (
   "fmt"
   "html/template"
+  "time"
   //"io"
   "log"
   "net/http"
@@ -29,12 +30,16 @@ func main(){
   }  
 
   h2 := func (w http.ResponseWriter, r *http.Request) {
+    time.Sleep(1 * time.Second)
     title := r.PostFormValue("title") 
     director := r.PostFormValue("director")
-    htmlStr := fmt.Sprintf("<div class='border border-gray-700 rounded-xl p-4 mt-4'><p>%s - %s</p></div>", title, director)
-    tmpl, _ := template.New("t").Parse(htmlStr)
-    tmpl.Execute(w, nil)
+    //htmlStr := fmt.Sprintf("<div class='border border-gray-700 rounded-xl p-4 mt-4'><p>%s - %s</p></div>", title, director)
+    //tmpl, _ := template.New("t").Parse(htmlStr)
+    //tmpl.Execute(w, nil)
 
+    tmpl := template.Must(template.ParseFiles("index.html"))
+
+    tmpl.ExecuteTemplate(w, "film-list-element", Film{Title: title, Director: director})
   }
 
 
